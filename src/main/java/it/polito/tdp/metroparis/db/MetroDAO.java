@@ -87,21 +87,21 @@ public class MetroDAO {
 			
 			rs.first();
 			
-			int conteggio = rs.getInt("cnt") ;
+			int conteggio = rs.getInt("cnt") ;//estraggo il valore conteggio
 						
 			conn.close();
 			
-			return (conteggio>0) ;
+			return (conteggio>0) ;// ritorno al chiamante l'informazione booleana se questo conteggio era non era maggiore di 0
 			
 		} catch (SQLException e) {
 			throw new RuntimeException("Errore query", e);
 		}
 	}
 	
-	public List<Connessione> getAllConnessioni(List<Fermata> fermate) {
+	public List<Connessione> getAllConnessioni(List<Fermata> fermate) { 
 		String sql = "SELECT  id_connessione, id_linea, id_stazP, id_stazA "
 				+ "FROM connessione "
-				+ "WHERE id_stazP>id_stazA" ;
+				+ "WHERE id_stazP>id_stazA" ; // elimino i doppioni
 		
 		try {
 			Connection conn = DBConnect.getConnection() ;
@@ -113,7 +113,10 @@ public class MetroDAO {
 			List<Connessione> result = new ArrayList<Connessione>();
 			while(rs.next()) {
 				
-				int id_partenza = rs.getInt("id_stazP") ;
+				int id_partenza = rs.getInt("id_stazP") ;//estraggo l'id dalla colonna stazione di partenza
+				//ho passato come parametro l'elenco delle fermate
+				//quando ho l'id numerico vado a cercare nell'elenco 
+				//qual è l'oggetto che corrisponde
 				Fermata fermata_partenza = null ;
 				for(Fermata f: fermate) 
 					if(f.getIdFermata()==id_partenza)
@@ -127,7 +130,7 @@ public class MetroDAO {
 
 				Connessione c = new Connessione(rs.getInt("id_connessione"),
 						null, // ingnoro la linea, adesso non ci serve
-						fermata_partenza,
+						fermata_partenza, // ho bisogno dell'oggetto fermata non dell'id
 						fermata_arrivo) ;
 				result.add(c);
 			}
