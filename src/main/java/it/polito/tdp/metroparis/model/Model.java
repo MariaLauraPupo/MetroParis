@@ -182,7 +182,7 @@ public class Model {
 		Fermata f = arrivo;
 		while(predecessore.get(f)!=null) {
 			f = predecessore.get(f);
-			result.add(0,f);
+			result.add(0,f);//ogni elemento nuovo lo inserisci in testa
 		}
 		return result;
 	}
